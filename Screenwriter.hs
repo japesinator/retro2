@@ -10,8 +10,8 @@ pre = unlines [ "#!/bin/bash"
 motd :: String -> String
 motd message = "echo -e \"${red}" ++ message ++ "${NC}\""
 
-copy :: Int -> String
-copy levelNumber = "cp -a /resources/level_" ++ show levelNumber ++ "/. ./"
+copy :: String -> Int -> String
+copy course level = "cp -a /resources/" ++ course ++ "/level_" ++ show level ++ "/. ./"
 
 aliases :: [(String, String)] -> String
 aliases [] = ""
@@ -25,8 +25,11 @@ aliases ((command, message) : rest) =
           , "alias " ++ command ++ "=\'" ++ command ++ "fun\'"
           ] ++ "\n" ++ aliases rest
 
-screenWrite :: String -> Int -> [(String, String)] -> String
-screenWrite m n a = pre ++ "\n" ++ motd m ++ "\n\n" ++ copy n ++ "\n\n" ++ aliases a
+screenWrite :: String -> String -> Int -> [(String, String)] -> String
+screenWrite m s n a = pre ++ "\n"
+                   ++ motd m ++ "\n\n"
+                   ++ copy s n ++ "\n\n"
+                   ++ aliases a
 
-makeFile :: String -> Int -> [(String, String)] -> IO ()
-makeFile m n a = writeFile "output.sh" $ screenWrite m n a
+makeFile :: String -> String -> Int -> [(String, String)] -> IO ()
+makeFile m s n a = writeFile "output.sh" $ screenWrite m s n a
