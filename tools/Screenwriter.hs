@@ -20,9 +20,8 @@ aliases ((command, message) : rest) =
           , "  unalias " ++ command
           , "  echo -e \"${red}" ++ message ++ "${NC}\""
           , "  echo"
-          , "  " ++ command
           , "}"
-          , "alias " ++ command ++ "=\'" ++ command ++ "fun\'"
+          , "alias " ++ command ++ "=\'" ++ command ++ "fun &&" ++ command ++ "\'"
           ] ++ "\n" ++ aliases rest
 
 screenWrite :: String -> String -> Int -> [(String, String)] -> String
